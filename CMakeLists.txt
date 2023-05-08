@@ -16,3 +16,5 @@ if (WIN32 AND BUILD_SHARED_LIBS)
     add_custom_command(TARGET DrugaSpaZadaca POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:DrugaSpaZadaca> $<TARGET_FILE_DIR:DrugaSpaZadaca> COMMAND_EXPAND_LISTS)
 endif ()
+# cmake -DCMAKE_BUILD_TYPE=Release -S /path/to/source-dir -B /path/to/build-dir
+# cmake --build /path/to/build-dir

@@ -19,7 +19,7 @@ Grid::Grid(sf::RenderWindow *window, double speed, int spawn_rate) {
     this->speed = speed;
     this->spawn_rate = spawn_rate;
     this->window = window;
-    int x = 1, y = 1;
+    int x = 0, y = 0;
 
     for (auto i = 0; i < dots->size(); ++i) {
         (*dots)[i].move(x * 10, y * 10);
@@ -31,18 +31,18 @@ Grid::Grid(sf::RenderWindow *window, double speed, int spawn_rate) {
         }
     }
 }
-
+//todo neradi provjeravanje susjeda neznam zasto ali nedela
 int Grid::susjedi(Dot *dot, int i) {
     int c = 0;
     if (i != 0) {
         auto left = dot - 1;
         if (left->IsAlive()) c++;
     }
-    if (i < sizeX * sizeY) {
+    if (i != sizeX * (sizeY - 1)) {
         auto rignt = dot + 1;
         if (rignt->IsAlive()) c++;
     }
-    if (i > sizeX) {
+    if(i > sizeX) {
         auto top = dot - sizeX;
         auto topleft = top - 1;
         auto topright = top + 1;
@@ -50,7 +50,7 @@ int Grid::susjedi(Dot *dot, int i) {
         if (topleft->IsAlive()) c++;
         if (topright->IsAlive()) c++;
     }
-    if (i < sizeX * (sizeY - 1)) {
+    if (i < (sizeX * (sizeY - 1))) {
         auto bottom = dot + sizeX;
         auto botleft = bottom - 1;
         auto botright = bottom + 1;
@@ -58,6 +58,7 @@ int Grid::susjedi(Dot *dot, int i) {
         if (botleft->IsAlive()) c++;
         if (botright->IsAlive()) c++;
     }
+
     return c;
 }
 
@@ -66,10 +67,13 @@ void Grid::next_gen() {
     for (int i = 0; i < dots->size(); ++i) {
 
         int BrSusjeda = susjedi(&(*old)[i], i);
+//
+//        if (BrSusjeda == 2 && (*old)[i].IsAlive()) {}
+//        else if (BrSusjeda == 3) (*dots)[i].Born();
+//        else (*dots)[i].Die();
 
-        if (BrSusjeda == 2 && (*old)[i].IsAlive()) {}
+        if ((*dots)[i].IsAlive() && (BrSusjeda < 2 || BrSusjeda > 3)) (*dots)[i].Die();
         else if (BrSusjeda == 3) (*dots)[i].Born();
-        else (*dots)[i].Die();
     }
 
 }
