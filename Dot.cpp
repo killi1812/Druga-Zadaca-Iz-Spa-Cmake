@@ -15,7 +15,7 @@ void Dot::move(int x, int y) {
 Dot::Dot() {
     dot.setSize(sf::Vector2f(10.f, 10.f));
     dot.setFillColor(sf::Color::Black);
-    dot.setOutlineColor(sf::Color::White);
+    dot.setOutlineColor(sf::Color::Black);
     dot.setOutlineThickness(0.6);
 }
 
