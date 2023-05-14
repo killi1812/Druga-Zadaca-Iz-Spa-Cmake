@@ -1,0 +1,4 @@
+#!/bin/bash
+sudo cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
+sudo cmake --build build
+
