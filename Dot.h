@@ -15,8 +15,6 @@ private:
 
 public:
     Dot();
-
-
     ~Dot();
 
     void Born();
@@ -27,7 +25,7 @@ public:
 
     void Switch();
 
-    bool IsAlive();
+    bool IsAlive() const;
 
     friend bool operator==(const Dot &left, const Dot &right);
 

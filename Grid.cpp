@@ -31,51 +31,80 @@ Grid::Grid(sf::RenderWindow *window, double speed, int spawn_rate) {
         }
     }
 }
+
 //todo neradi provjeravanje susjeda neznam zasto ali nedela
-int Grid::susjedi(Dot *dot, int i) {
+int Grid::susjedi(std::array<Dot, 108 * 192> *dot, int i) {
     int c = 0;
-    if (i != 0) {
-        auto left = dot - 1;
-        if (left->IsAlive()) c++;
+
+    if (i != 0 && i % sizeX != 0) {
+        auto left = i - 1;
+
+        if (dot->at(left).IsAlive()) {
+            c++;
+        }
     }
-    if (i != sizeX * (sizeY - 1)) {
-        auto rignt = dot + 1;
-        if (rignt->IsAlive()) c++;
+    if (i % sizeX != (sizeX - 1)) {
+        auto rignt = i + 1;
+        if (dot->at(rignt).IsAlive()) c++;
     }
-    if(i > sizeX) {
-        auto top = dot - sizeX;
-        auto topleft = top - 1;
-        auto topright = top + 1;
-        if (top->IsAlive()) c++;
-        if (topleft->IsAlive()) c++;
-        if (topright->IsAlive()) c++;
+    //nedela  cekiranje iznad
+    if (i >= sizeX) {
+        auto top = i - sizeX;
+        if (dot->at(top).IsAlive()) {
+            c++;
+        }
+
+        if (i % sizeX != 0) {
+            auto topleft = top - 1;
+            if (dot->at(topleft).IsAlive()) c++;
+        }
+
+        if (i % sizeX != (sizeX - 1)) {
+            auto topright = top + 1;
+            if (dot->at(topright).IsAlive()) c++;
+        }
     }
-    if (i < (sizeX * (sizeY - 1))) {
-        auto bottom = dot + sizeX;
-        auto botleft = bottom - 1;
-        auto botright = bottom + 1;
-        if (bottom->IsAlive()) c++;
-        if (botleft->IsAlive()) c++;
-        if (botright->IsAlive()) c++;
+
+    if (i <= (sizeX * (sizeY - 1) - 1)) {
+        auto bottom = i + sizeX;
+        if (dot->at(bottom).IsAlive()) c++;
+        if (i % sizeX != 0) {
+
+            auto botleft = bottom - 1;
+            if (dot->at(botleft).IsAlive()) c++;
+        }
+        if (i % sizeX != (sizeX - 1)) {
+
+            auto botright = bottom + 1;
+            if (dot->at(botright).IsAlive()) c++;
+        }
     }
 
     return c;
 }
 
 void Grid::next_gen() {
-    old = dots;
+    for(int i = 0; i < dots->size();i++){
+        (*old)[i] =  (*dots)[i];
+    }
+    int counter = 0, died = 0;
     for (int i = 0; i < dots->size(); ++i) {
 
-        int BrSusjeda = susjedi(&(*old)[i], i);
-//
-//        if (BrSusjeda == 2 && (*old)[i].IsAlive()) {}
-//        else if (BrSusjeda == 3) (*dots)[i].Born();
-//        else (*dots)[i].Die();
+        int BrSusjeda = susjedi(old, i);
 
-        if ((*dots)[i].IsAlive() && (BrSusjeda < 2 || BrSusjeda > 3)) (*dots)[i].Die();
-        else if (BrSusjeda == 3) (*dots)[i].Born();
+        //        if (BrSusjeda == 2 && (*old)[i].IsAlive()) {}
+        //        else if (BrSusjeda == 3) (*dots)[i].Born();
+        //        else (*dots)[i].Die();
+
+        if ((*dots)[i].IsAlive() && (BrSusjeda < 2 || BrSusjeda > 3)) {
+            (*dots)[i].Die();
+            died++;
+        } else if (BrSusjeda == 3) {
+            (*dots)[i].Born();
+            counter++;
+        }
+
     }
-
 }
 
 Grid::~Grid() {

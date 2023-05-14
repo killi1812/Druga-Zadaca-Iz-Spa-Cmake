@@ -15,7 +15,7 @@ void Dot::move(int x, int y) {
 Dot::Dot() {
     dot.setSize(sf::Vector2f(10.f, 10.f));
     dot.setFillColor(sf::Color::Black);
-    dot.setOutlineColor(sf::Color::Black);
+    dot.setOutlineColor(sf::Color::White);
     dot.setOutlineThickness(0.6);
 }
 
@@ -33,17 +33,16 @@ void Dot::Die() {
     dot.setFillColor(sf::Color::Black);
 }
 
-bool Dot::IsAlive() {
+bool Dot::IsAlive() const{
     return alive;
 }
 
 void Dot::Switch() {
-    if (IsAlive()) Die();
-    else Born();
+    dot.setFillColor(sf::Color::Blue);
 }
 
 bool operator==(const Dot &left, const Dot &right) {
-    return left.alive == right.alive;
+    return right.alive == left.alive;
 }
 
 void Dot::FirstBorn(int spawn_rate) {

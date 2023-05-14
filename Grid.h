@@ -19,7 +19,7 @@ class Grid {
     sf::RenderWindow *window;
     sf::Clock clock;
 
-    int susjedi(Dot *dot, int i);
+    int susjedi(std::array<Dot, 108 * 192> *dot, int i);
 
     void next_gen();
 
